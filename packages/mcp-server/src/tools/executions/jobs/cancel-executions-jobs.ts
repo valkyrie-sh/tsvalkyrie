@@ -1,10 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { maybeFilter } from 'tsvalkyrie-mcp/filtering';
-import { asTextContentResult } from 'tsvalkyrie-mcp/tools/types';
+import { Metadata, asTextContentResult } from 'tsvalkyrie-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import type { Metadata } from '../../';
 import Tsvalkyrie from 'tsvalkyrie';
 
 export const metadata: Metadata = {
