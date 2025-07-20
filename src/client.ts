@@ -173,7 +173,7 @@ export class Tsvalkyrie {
    * API Client for interfacing with the Tsvalkyrie API.
    *
    * @param {string | null | undefined} [opts.apiKey=process.env['TSVALKYRIE_API_KEY'] ?? null]
-   * @param {string} [opts.baseURL=process.env['TSVALKYRIE_BASE_URL'] ?? http://localhost:8080/api] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['TSVALKYRIE_BASE_URL'] ?? https://backend.evnix.cloud/api] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -189,7 +189,7 @@ export class Tsvalkyrie {
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || `http://localhost:8080/api`,
+      baseURL: baseURL || `https://backend.evnix.cloud/api`,
     };
 
     this.baseURL = options.baseURL!;
@@ -231,10 +231,10 @@ export class Tsvalkyrie {
   }
 
   /**
-   * Check whether the base URL is set to its default.
+   * Check whether the base URL is set t8080o its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'http://localhost:8080/api';
+    return this.baseURL !== 'https://backend.evnix.cloud/api';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
