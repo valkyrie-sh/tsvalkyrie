@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { asTextContentResult } from 'tsvalkyrie-mcp/tools/types';
+import { maybeFilter } from 'tsvalkyrie-mcp/filtering';
+import { Metadata, asTextContentResult } from 'tsvalkyrie-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import type { Metadata } from '../';
 import Tsvalkyrie from 'tsvalkyrie';
 
 export const metadata: Metadata = {
@@ -17,7 +17,8 @@ export const metadata: Metadata = {
 
 export const tool: Tool = {
   name: 'execute_executions',
-  description: 'Execute a script',
+  description:
+    "When using this tool, always use the `jq_filter` parameter to reduce the response size and improve performance.\n\nOnly omit if you're sure you don't need the data.\n\nExecute a script\n\n# Response Schema\n```json\n{\n  type: 'object',\n  properties: {\n    events: {\n      type: 'string'\n    },\n    jobId: {\n      type: 'integer'\n    },\n    websocket: {\n      type: 'string'\n    }\n  },\n  required: [    'events',\n    'jobId',\n    'websocket'\n  ]\n}\n```",
   inputSchema: {
     type: 'object',
     properties: {
@@ -48,7 +49,6 @@ export const tool: Tool = {
                   type: 'string',
                 },
               },
-              required: [],
             },
           },
           languageDependencies: {
@@ -70,7 +70,6 @@ export const tool: Tool = {
             },
           },
         },
-        required: [],
       },
       exec_timeout: {
         type: 'integer',
@@ -96,13 +95,20 @@ export const tool: Tool = {
       'X-Auth-Token': {
         type: 'string',
       },
+      jq_filter: {
+        type: 'string',
+        title: 'jq Filter',
+        description:
+          'A jq filter to apply to the response to include certain fields. Consult the output schema in the tool description to see the fields that are available.\n\nFor example: to include only the `name` field in every object of a results array, you can provide ".results[].name".\n\nFor more information, see the [jq documentation](https://jqlang.org/manual/).',
+      },
     },
+    required: [],
   },
 };
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
   const body = args as any;
-  return asTextContentResult(await client.executions.execute(body));
+  return asTextContentResult(await maybeFilter(args, await client.executions.execute(body)));
 };
 
 export default { metadata, tool, handler };
