@@ -209,11 +209,6 @@ export interface ExecutionExecuteParams {
   /**
    * Body param:
    */
-  exec_timeout?: number;
-
-  /**
-   * Body param:
-   */
   extension?: string;
 
   /**
@@ -235,6 +230,11 @@ export interface ExecutionExecuteParams {
    * Body param:
    */
   max_retries?: number;
+
+  /**
+   * Body param:
+   */
+  timeout?: number;
 
   /**
    * Body param:
