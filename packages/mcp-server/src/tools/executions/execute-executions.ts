@@ -71,9 +71,6 @@ export const tool: Tool = {
           },
         },
       },
-      exec_timeout: {
-        type: 'integer',
-      },
       extension: {
         type: 'string',
       },
@@ -87,6 +84,9 @@ export const tool: Tool = {
         type: 'string',
       },
       max_retries: {
+        type: 'integer',
+      },
+      timeout: {
         type: 'integer',
       },
       version: {
