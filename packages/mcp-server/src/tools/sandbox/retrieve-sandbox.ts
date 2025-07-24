@@ -37,6 +37,9 @@ export const tool: Tool = {
     },
     required: ['sandboxId'],
   },
+  annotations: {
+    readOnlyHint: true,
+  },
 };
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
