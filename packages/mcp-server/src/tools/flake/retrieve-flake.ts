@@ -34,6 +34,9 @@ export const tool: Tool = {
     },
     required: ['jobId'],
   },
+  annotations: {
+    readOnlyHint: true,
+  },
 };
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {

@@ -59,6 +59,7 @@ export const tool: Tool = {
     },
     required: [],
   },
+  annotations: {},
 };
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
