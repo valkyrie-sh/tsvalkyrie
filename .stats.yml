@@ -1,4 +1,4 @@
 configured_endpoints: 19
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/valkyrie%2Ftsvalkyrie-4a7cea9c45d0a3a72bd478401090dbe7e688905d8702e7247e9628a9b1688c7a.yml
-openapi_spec_hash: 79c3d983e01c4a00c021a30dbcddd6ef
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/valkyrie%2Ftsvalkyrie-d55d1ec13b55dc2cfde5323f2fc7edacfdcb57e1ee93ca9ed8db4bd52a91fd85.yml
+openapi_spec_hash: 20109ef6ef4582e12d77b0842a5b3702
 config_hash: ec8820bba7348bc51b831b9a3271f54c
