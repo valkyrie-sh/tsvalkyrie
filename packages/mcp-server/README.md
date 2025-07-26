@@ -9,8 +9,8 @@ It is generated with [Stainless](https://www.stainless.com/).
 Because it's not published yet, clone the repo and build it:
 
 ```sh
-git clone git@github.com:stainless-sdks/tsvalkyrie-typescript.git
-cd tsvalkyrie-typescript
+git clone git@github.com:valkyrie-sh/tsvalkyrie.git
+cd tsvalkyrie
 ./scripts/bootstrap
 ./scripts/build
 ```
@@ -40,7 +40,7 @@ For clients with a configuration JSON, it might look something like this:
   "mcpServers": {
     "tsvalkyrie_api": {
       "command": "node",
-      "args": ["/path/to/local/tsvalkyrie-typescript/packages/mcp-server", "--client=claude", "--tools=all"],
+      "args": ["/path/to/local/tsvalkyrie/packages/mcp-server", "--client=claude", "--tools=all"],
       "env": {
         "TSVALKYRIE_API_KEY": "My API Key"
       }
