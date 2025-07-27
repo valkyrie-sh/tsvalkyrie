@@ -12,6 +12,7 @@ import { withWebSocketConnection } from '../websocket';
 import { ExecutionWSMessage, ExecutionResponse } from './types';
 export type ExecutionStatus = 'pending' | 'scheduled' | 'completed' | 'failed' | 'cancelled';
 import { MessageEvent } from 'ws';
+import { readEnv } from '../../internal/utils/env';
 
 export class Executions extends APIResource {
   jobs: ExecutionsJobsAPI.Jobs = new ExecutionsJobsAPI.Jobs(this._client);
@@ -79,8 +80,8 @@ export class Executions extends APIResource {
       const resp = await this.exec(params, options);
       const jobId = resp.jobId;
       const execRes: ExecutionResponse = resp as any;
-      const protocol = 'wss';
-      const config_host = 'backend.evnix.cloud';
+      const protocol: string = readEnv('VITE_WS_PROTOCOL') ?? 'ws';
+      const config_host: string = readEnv('VITE_WS_HOST') ?? 'localhost:8080';
       const websocketUrl = `${protocol}://${config_host}${execRes.websocket}`;
       let currentStatus: ExecutionStatus = 'scheduled';
       let currentOutput: string = '';
