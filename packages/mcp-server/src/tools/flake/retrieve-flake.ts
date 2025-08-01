@@ -40,8 +40,8 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
-  const { jobId, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(args, await client.flake.retrieve(jobId)));
+  const { jobId, jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.flake.retrieve(jobId)));
 };
 
 export default { metadata, tool, handler };
