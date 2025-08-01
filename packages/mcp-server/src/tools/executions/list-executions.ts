@@ -48,8 +48,8 @@ export const tool: Tool = {
 };
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
-  const body = args as any;
-  return asTextContentResult(await maybeFilter(args, await client.executions.list(body)));
+  const { jq_filter, ...body } = args as any;
+  return asTextContentResult(await maybeFilter(jq_filter, await client.executions.list(body)));
 };
 
 export default { metadata, tool, handler };
