@@ -1,2 +1,4 @@
 execution.patch
+yarn-lock.patch
+package-json.patch
 websocket.patch
