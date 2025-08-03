@@ -1,0 +1,12 @@
+Index: tsvalkyrie/tsvalkyrie-typescript/src/resources/executions/executions.ts
+===================================================================
+--- tsvalkyrie.orig/tsvalkyrie-typescript/src/resources/executions/executions.ts
++++ tsvalkyrie/tsvalkyrie-typescript/src/resources/executions/executions.ts
+@@ -9,6 +9,7 @@ import { buildHeaders } from '../../inte
+ import { RequestOptions } from '../../internal/request-options';
+ import { path } from '../../internal/utils/path';
+ 
++//f u
+ export class Executions extends APIResource {
+   jobs: ExecutionsJobsAPI.Jobs = new ExecutionsJobsAPI.Jobs(this._client);
+ 

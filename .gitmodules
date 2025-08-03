@@ -1,0 +1,3 @@
+[submodule "tsvalkyrie-typescript"]
+	path = tsvalkyrie-typescript
+	url = https://github.com/stainless-sdks/tsvalkyrie-typescript.git
