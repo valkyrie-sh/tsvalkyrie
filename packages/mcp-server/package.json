@@ -8,10 +8,10 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stainless-sdks/tsvalkyrie-typescript.git",
+    "url": "git+https://github.com/valkyrie-sh/tsvalkyrie.git",
     "directory": "packages/mcp-server"
   },
-  "homepage": "https://github.com/stainless-sdks/tsvalkyrie-typescript/tree/main/packages/mcp-server#readme",
+  "homepage": "https://github.com/valkyrie-sh/tsvalkyrie/tree/main/packages/mcp-server#readme",
   "license": "MIT",
   "packageManager": "yarn@1.22.22",
   "private": false,
@@ -29,6 +29,7 @@
   "dependencies": {
     "tsvalkyrie": "file:../../dist/",
     "@modelcontextprotocol/sdk": "^1.11.5",
+    "jq-web": "https://github.com/stainless-api/jq-web/releases/download/v0.8.2/jq-web.tar.gz",
     "yargs": "^17.7.2",
     "@cloudflare/cabidela": "^0.2.4",
     "zod": "^3.25.20",

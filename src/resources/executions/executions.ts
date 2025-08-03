@@ -8,11 +8,6 @@ import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
-import { withWebSocketConnection } from '../websocket';
-import { ExecutionWSMessage, ExecutionResponse } from './types';
-export type ExecutionStatus = 'pending' | 'scheduled' | 'completed' | 'failed' | 'cancelled';
-import { MessageEvent } from 'ws';
-import { readEnv } from '../../internal/utils/env';
 
 export class Executions extends APIResource {
   jobs: ExecutionsJobsAPI.Jobs = new ExecutionsJobsAPI.Jobs(this._client);
@@ -56,7 +51,7 @@ export class Executions extends APIResource {
   /**
    * Execute a script
    */
-  exec(params: ExecutionExecuteParams, options?: RequestOptions): APIPromise<ExecutionExecuteResponse> {
+  execute(params: ExecutionExecuteParams, options?: RequestOptions): APIPromise<ExecutionExecuteResponse> {
     const { 'X-Auth-Token': xAuthToken, ...body } = params;
     return this._client.post('/executions/execute', {
       body,
@@ -66,77 +61,6 @@ export class Executions extends APIResource {
         options?.headers,
       ]),
     });
-  }
-
-  /**
-   * @param params - Parameters for the execution request, including 'X-Auth-Token'.
-   * @param options - Additional request options for the HTTP POST.
-   * @returns A promise that resolves with the final ExecutionStatus and output string.
-   */
-  async execute(params: ExecutionExecuteParams, options?: RequestOptions): Promise<ExecutionWSMessage> {
-    const { 'X-Auth-Token': xAuthToken, ...body } = params;
-
-    try {
-      const resp = await this.exec(params, options);
-      const jobId = resp.jobId;
-      const execRes: ExecutionResponse = resp as any;
-      const protocol: string = readEnv('VITE_WS_PROTOCOL') ?? 'ws';
-      const config_host: string = readEnv('VITE_WS_HOST') ?? 'localhost:8080';
-      const websocketUrl = `${protocol}://${config_host}${execRes.websocket}`;
-      let currentStatus: ExecutionStatus = 'scheduled';
-      let currentOutput: string = '';
-
-      await withWebSocketConnection(websocketUrl, 30000, async (ws) => {
-        ws.onmessage = (event: MessageEvent) => {
-          try {
-            const messageData: ExecutionWSMessage = JSON.parse(event.data.toString());
-            currentStatus = messageData.status as ExecutionStatus;
-            if (messageData.logs) {
-              currentOutput = messageData.logs;
-            } else if (messageData.errorMsg) {
-              currentOutput = messageData.errorMsg;
-            }
-          } catch (e) {
-            ws.close(1008, 'Protocol error: Invalid message format');
-          }
-        };
-
-        while (!['completed', 'failed', 'cancelled'].includes(currentStatus)) {
-          await new Promise((resolve) => setTimeout(resolve, 4000));
-        }
-      });
-
-      return {
-        status: currentStatus,
-        logs: currentOutput,
-        $typeName: 'execution.ExecutionWSMessage',
-        jobId: resp.jobId,
-      };
-    } catch (e) {
-      if (e instanceof Error) {
-        const apiError = e as any;
-        if (apiError.status && apiError.error) {
-          return {
-            status: 'failed',
-            errorMsg: `API Error: ${apiError.status} - ${JSON.stringify(apiError.error)}`,
-            $typeName: 'execution.ExecutionWSMessage',
-            jobId: 0,
-          };
-        }
-        return {
-          status: 'failed',
-          errorMsg: `Error: ${e.message}`,
-          $typeName: 'execution.ExecutionWSMessage',
-          jobId: 0,
-        };
-      }
-      return {
-        status: 'failed',
-        errorMsg: `Unexpected error: ${String(e)}`,
-        $typeName: 'execution.ExecutionWSMessage',
-        jobId: 0,
-      };
-    }
   }
 
   /**
@@ -285,11 +209,6 @@ export interface ExecutionExecuteParams {
   /**
    * Body param:
    */
-  exec_timeout?: number;
-
-  /**
-   * Body param:
-   */
   extension?: string;
 
   /**
@@ -311,6 +230,11 @@ export interface ExecutionExecuteParams {
    * Body param:
    */
   max_retries?: number;
+
+  /**
+   * Body param:
+   */
+  timeout?: number;
 
   /**
    * Body param:

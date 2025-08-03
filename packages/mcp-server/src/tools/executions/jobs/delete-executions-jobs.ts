@@ -1,9 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { asTextContentResult } from 'tsvalkyrie-mcp/tools/types';
+import { Metadata, asTextContentResult } from 'tsvalkyrie-mcp/tools/types';
 
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
-import type { Metadata } from '../../';
 import Tsvalkyrie from 'tsvalkyrie';
 
 export const metadata: Metadata = {
@@ -28,6 +27,10 @@ export const tool: Tool = {
         type: 'string',
       },
     },
+    required: ['JobId'],
+  },
+  annotations: {
+    idempotentHint: true,
   },
 };
 
