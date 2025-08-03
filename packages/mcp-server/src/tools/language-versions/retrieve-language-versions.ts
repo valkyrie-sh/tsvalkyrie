@@ -25,9 +25,6 @@ export const tool: Tool = {
       id: {
         type: 'integer',
       },
-      'X-Auth-Token': {
-        type: 'string',
-      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -44,7 +41,7 @@ export const tool: Tool = {
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
   const { id, jq_filter, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(jq_filter, await client.languageVersions.retrieve(id, body)));
+  return asTextContentResult(await maybeFilter(jq_filter, await client.languageVersions.retrieve(id)));
 };
 
 export default { metadata, tool, handler };

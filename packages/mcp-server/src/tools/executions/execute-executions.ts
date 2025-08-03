@@ -75,7 +75,19 @@ export const tool: Tool = {
         type: 'string',
       },
       files: {
-        type: 'string',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            content: {
+              type: 'string',
+            },
+            name: {
+              type: 'string',
+            },
+          },
+          required: ['content', 'name'],
+        },
       },
       input: {
         type: 'string',

@@ -10,19 +10,8 @@ export class Jobs extends APIResource {
   /**
    * Get execution job
    */
-  retrieve(
-    jobID: number,
-    params: JobRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<Job> {
-    const { 'X-Auth-Token': xAuthToken } = params ?? {};
-    return this._client.get(path`/executions/jobs/${jobID}`, {
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(jobID: number, options?: RequestOptions): APIPromise<Job> {
+    return this._client.get(path`/executions/jobs/${jobID}`, options);
   }
 
   /**
@@ -80,13 +69,6 @@ export interface JobCancelResponse {
   message: string;
 }
 
-export interface JobRetrieveParams {
-  /**
-   * Authentication token
-   */
-  'X-Auth-Token'?: string;
-}
-
 export interface JobDeleteParams {
   /**
    * Authentication token
@@ -105,7 +87,6 @@ export declare namespace Jobs {
   export {
     type Job as Job,
     type JobCancelResponse as JobCancelResponse,
-    type JobRetrieveParams as JobRetrieveParams,
     type JobDeleteParams as JobDeleteParams,
     type JobCancelParams as JobCancelParams,
   };

@@ -21,18 +21,6 @@ describe('resource jobs', () => {
   });
 
   // skipped: tests are disabled for the time being
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.executions.jobs.retrieve(
-        0,
-        { 'X-Auth-Token': 'X-Auth-Token' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Tsvalkyrie.NotFoundError);
-  });
-
-  // skipped: tests are disabled for the time being
   test.skip('delete', async () => {
     const responsePromise = client.executions.jobs.delete(0);
     const rawResponse = await responsePromise.asResponse();

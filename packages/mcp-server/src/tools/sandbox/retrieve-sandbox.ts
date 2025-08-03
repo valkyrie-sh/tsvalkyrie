@@ -25,9 +25,6 @@ export const tool: Tool = {
       sandboxId: {
         type: 'integer',
       },
-      'X-Auth-Token': {
-        type: 'string',
-      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -44,7 +41,7 @@ export const tool: Tool = {
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
   const { sandboxId, jq_filter, ...body } = args as any;
-  return asTextContentResult(await maybeFilter(jq_filter, await client.sandbox.retrieve(sandboxId, body)));
+  return asTextContentResult(await maybeFilter(jq_filter, await client.sandbox.retrieve(sandboxId)));
 };
 
 export default { metadata, tool, handler };

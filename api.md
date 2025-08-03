@@ -25,7 +25,7 @@ Types:
 
 Methods:
 
-- <code title="get /version">client.version.<a href="./src/resources/version.ts">retrieve</a>({ ...params }) -> VersionRetrieveResponse</code>
+- <code title="get /version">client.version.<a href="./src/resources/version.ts">retrieve</a>() -> VersionRetrieveResponse</code>
 
 # Languages
 
@@ -38,9 +38,9 @@ Types:
 
 Methods:
 
-- <code title="get /languages/{id}">client.languages.<a href="./src/resources/languages.ts">retrieve</a>(id, { ...params }) -> LanguageRetrieveResponse</code>
-- <code title="get /languages">client.languages.<a href="./src/resources/languages.ts">list</a>({ ...params }) -> LanguageListResponse</code>
-- <code title="get /languages/{id}/versions">client.languages.<a href="./src/resources/languages.ts">retrieveVersions</a>(id, { ...params }) -> LanguageRetrieveVersionsResponse</code>
+- <code title="get /languages/{id}">client.languages.<a href="./src/resources/languages.ts">retrieve</a>(id) -> LanguageRetrieveResponse</code>
+- <code title="get /languages">client.languages.<a href="./src/resources/languages.ts">list</a>() -> LanguageListResponse</code>
+- <code title="get /languages/{id}/versions">client.languages.<a href="./src/resources/languages.ts">retrieveVersions</a>(id) -> LanguageRetrieveVersionsResponse</code>
 
 # LanguageVersions
 
@@ -52,8 +52,8 @@ Types:
 
 Methods:
 
-- <code title="get /language-versions/{id}">client.languageVersions.<a href="./src/resources/language-versions.ts">retrieve</a>(id, { ...params }) -> LanguageVersionRetrieveResponse</code>
-- <code title="get /language-versions">client.languageVersions.<a href="./src/resources/language-versions.ts">list</a>({ ...params }) -> LanguageVersionListResponse</code>
+- <code title="get /language-versions/{id}">client.languageVersions.<a href="./src/resources/language-versions.ts">retrieve</a>(id) -> LanguageVersionRetrieveResponse</code>
+- <code title="get /language-versions">client.languageVersions.<a href="./src/resources/language-versions.ts">list</a>() -> LanguageVersionListResponse</code>
 
 # Sandbox
 
@@ -65,7 +65,7 @@ Types:
 Methods:
 
 - <code title="post /sandbox">client.sandbox.<a href="./src/resources/sandbox.ts">create</a>({ ...params }) -> SandboxCreateResponse</code>
-- <code title="get /sandbox/{sandboxId}">client.sandbox.<a href="./src/resources/sandbox.ts">retrieve</a>(sandboxID, { ...params }) -> SandboxRetrieveResponse</code>
+- <code title="get /sandbox/{sandboxId}">client.sandbox.<a href="./src/resources/sandbox.ts">retrieve</a>(sandboxID) -> SandboxRetrieveResponse</code>
 
 # Flake
 
@@ -88,10 +88,10 @@ Types:
 
 Methods:
 
-- <code title="get /executions/{execId}">client.executions.<a href="./src/resources/executions/executions.ts">retrieve</a>(execID, { ...params }) -> ExecutionResult</code>
+- <code title="get /executions/{execId}">client.executions.<a href="./src/resources/executions/executions.ts">retrieve</a>(execID) -> ExecutionResult</code>
 - <code title="get /executions">client.executions.<a href="./src/resources/executions/executions.ts">list</a>({ ...params }) -> ExecutionListResponse</code>
 - <code title="post /executions/execute">client.executions.<a href="./src/resources/executions/executions.ts">execute</a>({ ...params }) -> ExecutionExecuteResponse</code>
-- <code title="get /execution/config">client.executions.<a href="./src/resources/executions/executions.ts">retrieveConfig</a>({ ...params }) -> ExecutionRetrieveConfigResponse</code>
+- <code title="get /execution/config">client.executions.<a href="./src/resources/executions/executions.ts">retrieveConfig</a>() -> ExecutionRetrieveConfigResponse</code>
 
 ## Jobs
 
@@ -102,6 +102,6 @@ Types:
 
 Methods:
 
-- <code title="get /executions/jobs/{JobId}">client.executions.jobs.<a href="./src/resources/executions/jobs.ts">retrieve</a>(jobID, { ...params }) -> Job</code>
+- <code title="get /executions/jobs/{JobId}">client.executions.jobs.<a href="./src/resources/executions/jobs.ts">retrieve</a>(jobID) -> Job</code>
 - <code title="delete /executions/jobs/{JobId}">client.executions.jobs.<a href="./src/resources/executions/jobs.ts">delete</a>(jobID, { ...params }) -> void</code>
 - <code title="put /executions/jobs/{JobId}">client.executions.jobs.<a href="./src/resources/executions/jobs.ts">cancel</a>(jobID, { ...params }) -> JobCancelResponse</code>

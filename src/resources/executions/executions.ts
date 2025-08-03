@@ -3,7 +3,7 @@
 import { APIResource } from '../../core/resource';
 import * as JobsAPI from '../jobs';
 import * as ExecutionsJobsAPI from './jobs';
-import { Job, JobCancelParams, JobCancelResponse, JobDeleteParams, JobRetrieveParams, Jobs } from './jobs';
+import { Job, JobCancelParams, JobCancelResponse, JobDeleteParams, Jobs } from './jobs';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -15,37 +15,18 @@ export class Executions extends APIResource {
   /**
    * Get execution result by id
    */
-  retrieve(
-    execID: number,
-    params: ExecutionRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ExecutionResult> {
-    const { 'X-Auth-Token': xAuthToken } = params ?? {};
-    return this._client.get(path`/executions/${execID}`, {
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(execID: number, options?: RequestOptions): APIPromise<ExecutionResult> {
+    return this._client.get(path`/executions/${execID}`, options);
   }
 
   /**
    * Get all executions
    */
   list(
-    params: ExecutionListParams | null | undefined = {},
+    query: ExecutionListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<ExecutionListResponse> {
-    const { 'X-Auth-Token': xAuthToken, ...query } = params ?? {};
-    return this._client.get('/executions', {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+    return this._client.get('/executions', { query, ...options });
   }
 
   /**
@@ -66,18 +47,8 @@ export class Executions extends APIResource {
   /**
    * Get execution config
    */
-  retrieveConfig(
-    params: ExecutionRetrieveConfigParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<ExecutionRetrieveConfigResponse> {
-    const { 'X-Auth-Token': xAuthToken } = params ?? {};
-    return this._client.get('/execution/config', {
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieveConfig(options?: RequestOptions): APIPromise<ExecutionRetrieveConfigResponse> {
+    return this._client.get('/execution/config', options);
   }
 }
 
@@ -156,28 +127,16 @@ export interface ExecutionRetrieveConfigResponse {
   SYSTEM_PROVIDER_CLEAN_UP?: boolean;
 }
 
-export interface ExecutionRetrieveParams {
-  /**
-   * Authentication token
-   */
-  'X-Auth-Token'?: string;
-}
-
 export interface ExecutionListParams {
   /**
-   * Query param: The current position of the cursor
+   * The current position of the cursor
    */
   cursor?: number;
 
   /**
-   * Query param: The limit for the records
+   * The limit for the records
    */
   limit?: number;
-
-  /**
-   * Header param: Authentication token
-   */
-  'X-Auth-Token'?: string;
 }
 
 export interface ExecutionExecuteParams {
@@ -214,7 +173,7 @@ export interface ExecutionExecuteParams {
   /**
    * Body param:
    */
-  files?: string;
+  files?: Array<ExecutionExecuteParams.File>;
 
   /**
    * Body param:
@@ -267,13 +226,12 @@ export namespace ExecutionExecuteParams {
       value?: string;
     }
   }
-}
 
-export interface ExecutionRetrieveConfigParams {
-  /**
-   * Authentication token
-   */
-  'X-Auth-Token'?: string;
+  export interface File {
+    content: string;
+
+    name: string;
+  }
 }
 
 Executions.Jobs = Jobs;
@@ -284,17 +242,14 @@ export declare namespace Executions {
     type ExecutionListResponse as ExecutionListResponse,
     type ExecutionExecuteResponse as ExecutionExecuteResponse,
     type ExecutionRetrieveConfigResponse as ExecutionRetrieveConfigResponse,
-    type ExecutionRetrieveParams as ExecutionRetrieveParams,
     type ExecutionListParams as ExecutionListParams,
     type ExecutionExecuteParams as ExecutionExecuteParams,
-    type ExecutionRetrieveConfigParams as ExecutionRetrieveConfigParams,
   };
 
   export {
     Jobs as Jobs,
     type Job as Job,
     type JobCancelResponse as JobCancelResponse,
-    type JobRetrieveParams as JobRetrieveParams,
     type JobDeleteParams as JobDeleteParams,
     type JobCancelParams as JobCancelParams,
   };
