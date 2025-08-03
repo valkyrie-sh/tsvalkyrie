@@ -4,7 +4,6 @@ import { APIResource } from '../core/resource';
 import * as ExecutionsAPI from './executions/executions';
 import * as ExecutionsJobsAPI from './executions/jobs';
 import { APIPromise } from '../core/api-promise';
-import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -13,18 +12,10 @@ export class Jobs extends APIResource {
    * Get all execution jobs
    */
   listExecutions(
-    params: JobListExecutionsParams | null | undefined = {},
+    query: JobListExecutionsParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<JobListExecutionsResponse> {
-    const { 'X-Auth-Token': xAuthToken, ...query } = params ?? {};
-    return this._client.get('/jobs/execution', {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+    return this._client.get('/jobs/execution', { query, ...options });
   }
 
   /**
@@ -32,18 +23,10 @@ export class Jobs extends APIResource {
    */
   retrieveJobExecutions(
     jobID: number,
-    params: JobRetrieveJobExecutionsParams | null | undefined = {},
+    query: JobRetrieveJobExecutionsParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<JobRetrieveJobExecutionsResponse> {
-    const { 'X-Auth-Token': xAuthToken, ...query } = params ?? {};
-    return this._client.get(path`/jobs/${jobID}/executions`, {
-      query,
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+    return this._client.get(path`/jobs/${jobID}/executions`, { query, ...options });
   }
 }
 
@@ -78,36 +61,26 @@ export interface JobRetrieveJobExecutionsResponse {
 
 export interface JobListExecutionsParams {
   /**
-   * Query param: The current position of the cursor
+   * The current position of the cursor
    */
   cursor?: number;
 
   /**
-   * Query param: The limit for the records
+   * The limit for the records
    */
   limit?: number;
-
-  /**
-   * Header param: Authentication token
-   */
-  'X-Auth-Token'?: string;
 }
 
 export interface JobRetrieveJobExecutionsParams {
   /**
-   * Query param: The current position of the cursor
+   * The current position of the cursor
    */
   cursor?: number;
 
   /**
-   * Query param: The limit for the records
+   * The limit for the records
    */
   limit?: number;
-
-  /**
-   * Header param: Authentication token
-   */
-  'X-Auth-Token'?: string;
 }
 
 export declare namespace Jobs {

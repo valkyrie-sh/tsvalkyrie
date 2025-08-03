@@ -24,10 +24,7 @@ describe('resource jobs', () => {
   test.skip('listExecutions: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.jobs.listExecutions(
-        { cursor: 0, limit: 0, 'X-Auth-Token': 'X-Auth-Token' },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.jobs.listExecutions({ cursor: 0, limit: 0 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Tsvalkyrie.NotFoundError);
   });
 
@@ -47,11 +44,7 @@ describe('resource jobs', () => {
   test.skip('retrieveJobExecutions: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.jobs.retrieveJobExecutions(
-        0,
-        { cursor: 0, limit: 0, 'X-Auth-Token': 'X-Auth-Token' },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.jobs.retrieveJobExecutions(0, { cursor: 0, limit: 0 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Tsvalkyrie.NotFoundError);
   });
 });

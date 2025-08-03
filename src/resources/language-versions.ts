@@ -2,7 +2,6 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
-import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -10,36 +9,15 @@ export class LanguageVersions extends APIResource {
   /**
    * Retrieve a language version entry from the database using its ID.
    */
-  retrieve(
-    id: number,
-    params: LanguageVersionRetrieveParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<LanguageVersionRetrieveResponse> {
-    const { 'X-Auth-Token': xAuthToken } = params ?? {};
-    return this._client.get(path`/language-versions/${id}`, {
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+  retrieve(id: number, options?: RequestOptions): APIPromise<LanguageVersionRetrieveResponse> {
+    return this._client.get(path`/language-versions/${id}`, options);
   }
 
   /**
    * Retrieve a list of all language versions from the database.
    */
-  list(
-    params: LanguageVersionListParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<LanguageVersionListResponse> {
-    const { 'X-Auth-Token': xAuthToken } = params ?? {};
-    return this._client.get('/language-versions', {
-      ...options,
-      headers: buildHeaders([
-        { ...(xAuthToken != null ? { 'X-Auth-Token': xAuthToken } : undefined) },
-        options?.headers,
-      ]),
-    });
+  list(options?: RequestOptions): APIPromise<LanguageVersionListResponse> {
+    return this._client.get('/language-versions', options);
   }
 }
 
@@ -85,26 +63,10 @@ export interface LanguageVersionListResponse {
   languageVersions: Array<LanguageVersion>;
 }
 
-export interface LanguageVersionRetrieveParams {
-  /**
-   * Authentication token
-   */
-  'X-Auth-Token'?: string;
-}
-
-export interface LanguageVersionListParams {
-  /**
-   * Authentication token
-   */
-  'X-Auth-Token'?: string;
-}
-
 export declare namespace LanguageVersions {
   export {
     type LanguageVersion as LanguageVersion,
     type LanguageVersionRetrieveResponse as LanguageVersionRetrieveResponse,
     type LanguageVersionListResponse as LanguageVersionListResponse,
-    type LanguageVersionRetrieveParams as LanguageVersionRetrieveParams,
-    type LanguageVersionListParams as LanguageVersionListParams,
   };
 }

@@ -28,19 +28,14 @@ import {
 } from './resources/jobs';
 import {
   LanguageVersion,
-  LanguageVersionListParams,
   LanguageVersionListResponse,
-  LanguageVersionRetrieveParams,
   LanguageVersionRetrieveResponse,
   LanguageVersions,
 } from './resources/language-versions';
 import {
   Language,
-  LanguageListParams,
   LanguageListResponse,
-  LanguageRetrieveParams,
   LanguageRetrieveResponse,
-  LanguageRetrieveVersionsParams,
   LanguageRetrieveVersionsResponse,
   Languages,
 } from './resources/languages';
@@ -48,19 +43,16 @@ import {
   Sandbox,
   SandboxCreateParams,
   SandboxCreateResponse,
-  SandboxRetrieveParams,
   SandboxRetrieveResponse,
 } from './resources/sandbox';
-import { Version, VersionRetrieveParams, VersionRetrieveResponse } from './resources/version';
+import { Version, VersionRetrieveResponse } from './resources/version';
 import {
   ExecutionExecuteParams,
   ExecutionExecuteResponse,
   ExecutionListParams,
   ExecutionListResponse,
   ExecutionResult,
-  ExecutionRetrieveConfigParams,
   ExecutionRetrieveConfigResponse,
-  ExecutionRetrieveParams,
   Executions,
 } from './resources/executions/executions';
 import { type Fetch } from './internal/builtin-types';
@@ -173,7 +165,7 @@ export class Tsvalkyrie {
    * API Client for interfacing with the Tsvalkyrie API.
    *
    * @param {string | null | undefined} [opts.apiKey=process.env['TSVALKYRIE_API_KEY'] ?? null]
-   * @param {string} [opts.baseURL=process.env['TSVALKYRIE_BASE_URL'] ?? https://backend.evnix.cloud/api] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['TSVALKYRIE_BASE_URL'] ?? http://localhost:8080/api] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -189,7 +181,7 @@ export class Tsvalkyrie {
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || `https://backend.evnix.cloud/api`,
+      baseURL: baseURL || `http://localhost:8080/api`,
     };
 
     this.baseURL = options.baseURL!;
@@ -216,7 +208,7 @@ export class Tsvalkyrie {
    * Create a new client instance re-using the same options given to the current client with optional overriding.
    */
   withOptions(options: Partial<ClientOptions>): this {
-    return new (this.constructor as any as new (props: ClientOptions) => typeof this)({
+    const client = new (this.constructor as any as new (props: ClientOptions) => typeof this)({
       ...this._options,
       baseURL: this.baseURL,
       maxRetries: this.maxRetries,
@@ -228,13 +220,14 @@ export class Tsvalkyrie {
       apiKey: this.apiKey,
       ...options,
     });
+    return client;
   }
 
   /**
-   * Check whether the base URL is set t8080o its default.
+   * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'https://backend.evnix.cloud/api';
+    return this.baseURL !== 'http://localhost:8080/api';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -254,7 +247,7 @@ export class Tsvalkyrie {
     );
   }
 
-  protected authHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     if (this.apiKey == null) {
       return undefined;
     }
@@ -389,7 +382,9 @@ export class Tsvalkyrie {
 
     await this.prepareOptions(options);
 
-    const { req, url, timeout } = this.buildRequest(options, { retryCount: maxRetries - retriesRemaining });
+    const { req, url, timeout } = await this.buildRequest(options, {
+      retryCount: maxRetries - retriesRemaining,
+    });
 
     await this.prepareRequest(req, { url, options });
 
@@ -467,7 +462,7 @@ export class Tsvalkyrie {
     } with status ${response.status} in ${headersTime - startTime}ms`;
 
     if (!response.ok) {
-      const shouldRetry = this.shouldRetry(response);
+      const shouldRetry = await this.shouldRetry(response);
       if (retriesRemaining && shouldRetry) {
         const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
 
@@ -566,7 +561,7 @@ export class Tsvalkyrie {
     }
   }
 
-  private shouldRetry(response: Response): boolean {
+  private async shouldRetry(response: Response): Promise<boolean> {
     // Note this is not a standard header.
     const shouldRetryHeader = response.headers.get('x-should-retry');
 
@@ -643,10 +638,10 @@ export class Tsvalkyrie {
     return sleepSeconds * jitter * 1000;
   }
 
-  buildRequest(
+  async buildRequest(
     inputOptions: FinalRequestOptions,
     { retryCount = 0 }: { retryCount?: number } = {},
-  ): { req: FinalizedRequestInit; url: string; timeout: number } {
+  ): Promise<{ req: FinalizedRequestInit; url: string; timeout: number }> {
     const options = { ...inputOptions };
     const { method, path, query, defaultBaseURL } = options;
 
@@ -654,7 +649,7 @@ export class Tsvalkyrie {
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
-    const reqHeaders = this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
+    const reqHeaders = await this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
 
     const req: FinalizedRequestInit = {
       method,
@@ -670,7 +665,7 @@ export class Tsvalkyrie {
     return { req, url, timeout: options.timeout };
   }
 
-  private buildHeaders({
+  private async buildHeaders({
     options,
     method,
     bodyHeaders,
@@ -680,7 +675,7 @@ export class Tsvalkyrie {
     method: HTTPMethod;
     bodyHeaders: HeadersLike;
     retryCount: number;
-  }): Headers {
+  }): Promise<Headers> {
     let idempotencyHeaders: HeadersLike = {};
     if (this.idempotencyHeader && method !== 'get') {
       if (!options.idempotencyKey) options.idempotencyKey = this.defaultIdempotencyKey();
@@ -696,7 +691,7 @@ export class Tsvalkyrie {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      this.authHeaders(options),
+      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -794,11 +789,7 @@ export declare namespace Tsvalkyrie {
     type JobRetrieveJobExecutionsParams as JobRetrieveJobExecutionsParams,
   };
 
-  export {
-    Version as Version,
-    type VersionRetrieveResponse as VersionRetrieveResponse,
-    type VersionRetrieveParams as VersionRetrieveParams,
-  };
+  export { Version as Version, type VersionRetrieveResponse as VersionRetrieveResponse };
 
   export {
     Languages as Languages,
@@ -806,9 +797,6 @@ export declare namespace Tsvalkyrie {
     type LanguageRetrieveResponse as LanguageRetrieveResponse,
     type LanguageListResponse as LanguageListResponse,
     type LanguageRetrieveVersionsResponse as LanguageRetrieveVersionsResponse,
-    type LanguageRetrieveParams as LanguageRetrieveParams,
-    type LanguageListParams as LanguageListParams,
-    type LanguageRetrieveVersionsParams as LanguageRetrieveVersionsParams,
   };
 
   export {
@@ -816,8 +804,6 @@ export declare namespace Tsvalkyrie {
     type LanguageVersion as LanguageVersion,
     type LanguageVersionRetrieveResponse as LanguageVersionRetrieveResponse,
     type LanguageVersionListResponse as LanguageVersionListResponse,
-    type LanguageVersionRetrieveParams as LanguageVersionRetrieveParams,
-    type LanguageVersionListParams as LanguageVersionListParams,
   };
 
   export {
@@ -825,7 +811,6 @@ export declare namespace Tsvalkyrie {
     type SandboxCreateResponse as SandboxCreateResponse,
     type SandboxRetrieveResponse as SandboxRetrieveResponse,
     type SandboxCreateParams as SandboxCreateParams,
-    type SandboxRetrieveParams as SandboxRetrieveParams,
   };
 
   export { Flake as Flake, type FlakeRetrieveResponse as FlakeRetrieveResponse };
@@ -836,9 +821,7 @@ export declare namespace Tsvalkyrie {
     type ExecutionListResponse as ExecutionListResponse,
     type ExecutionExecuteResponse as ExecutionExecuteResponse,
     type ExecutionRetrieveConfigResponse as ExecutionRetrieveConfigResponse,
-    type ExecutionRetrieveParams as ExecutionRetrieveParams,
     type ExecutionListParams as ExecutionListParams,
     type ExecutionExecuteParams as ExecutionExecuteParams,
-    type ExecutionRetrieveConfigParams as ExecutionRetrieveConfigParams,
   };
 }

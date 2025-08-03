@@ -31,7 +31,6 @@ describe('resource sandbox', () => {
             '{\n  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";\n  outputs = { self, nixpkgs }: {\n    # flake configuration\n  };\n}\n',
           services: ['string'],
           system_dependencies: ['gcc', 'make', 'git'],
-          'X-Auth-Token': 'X-Auth-Token',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -48,13 +47,5 @@ describe('resource sandbox', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // skipped: tests are disabled for the time being
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.sandbox.retrieve(0, { 'X-Auth-Token': 'X-Auth-Token' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Tsvalkyrie.NotFoundError);
   });
 });

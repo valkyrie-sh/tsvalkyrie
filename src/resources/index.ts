@@ -6,10 +6,8 @@ export {
   type ExecutionListResponse,
   type ExecutionExecuteResponse,
   type ExecutionRetrieveConfigResponse,
-  type ExecutionRetrieveParams,
   type ExecutionListParams,
   type ExecutionExecuteParams,
-  type ExecutionRetrieveConfigParams,
 } from './executions/executions';
 export { Flake, type FlakeRetrieveResponse } from './flake';
 export { Health } from './health';
@@ -26,8 +24,6 @@ export {
   type LanguageVersion,
   type LanguageVersionRetrieveResponse,
   type LanguageVersionListResponse,
-  type LanguageVersionRetrieveParams,
-  type LanguageVersionListParams,
 } from './language-versions';
 export {
   Languages,
@@ -35,15 +31,11 @@ export {
   type LanguageRetrieveResponse,
   type LanguageListResponse,
   type LanguageRetrieveVersionsResponse,
-  type LanguageRetrieveParams,
-  type LanguageListParams,
-  type LanguageRetrieveVersionsParams,
 } from './languages';
 export {
   Sandbox,
   type SandboxCreateResponse,
   type SandboxRetrieveResponse,
   type SandboxCreateParams,
-  type SandboxRetrieveParams,
 } from './sandbox';
-export { Version, type VersionRetrieveResponse, type VersionRetrieveParams } from './version';
+export { Version, type VersionRetrieveResponse } from './version';
