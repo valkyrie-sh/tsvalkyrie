@@ -33,9 +33,6 @@ export const tool: Tool = {
         type: 'integer',
         description: 'The limit for the records',
       },
-      'X-Auth-Token': {
-        type: 'string',
-      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',

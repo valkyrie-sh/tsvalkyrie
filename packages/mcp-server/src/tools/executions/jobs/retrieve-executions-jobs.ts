@@ -25,9 +25,6 @@ export const tool: Tool = {
       JobId: {
         type: 'integer',
       },
-      'X-Auth-Token': {
-        type: 'string',
-      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',
@@ -44,9 +41,7 @@ export const tool: Tool = {
 
 export const handler = async (client: Tsvalkyrie, args: Record<string, unknown> | undefined) => {
   const { JobId, jq_filter, ...body } = args as any;
-  return asTextContentResult(
-    await maybeFilter(jq_filter, await client.executions.jobs.retrieve(JobId, body)),
-  );
+  return asTextContentResult(await maybeFilter(jq_filter, await client.executions.jobs.retrieve(JobId)));
 };
 
 export default { metadata, tool, handler };

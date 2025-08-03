@@ -47,9 +47,6 @@ export const tool: Tool = {
           type: 'string',
         },
       },
-      'X-Auth-Token': {
-        type: 'string',
-      },
       jq_filter: {
         type: 'string',
         title: 'jq Filter',

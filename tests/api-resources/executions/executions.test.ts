@@ -21,14 +21,6 @@ describe('resource executions', () => {
   });
 
   // skipped: tests are disabled for the time being
-  test.skip('retrieve: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.executions.retrieve(0, { 'X-Auth-Token': 'X-Auth-Token' }, { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Tsvalkyrie.NotFoundError);
-  });
-
-  // skipped: tests are disabled for the time being
   test.skip('list', async () => {
     const responsePromise = client.executions.list();
     const rawResponse = await responsePromise.asResponse();
@@ -44,10 +36,7 @@ describe('resource executions', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.executions.list(
-        { cursor: 0, limit: 0, 'X-Auth-Token': 'X-Auth-Token' },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.executions.list({ cursor: 0, limit: 0 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Tsvalkyrie.NotFoundError);
   });
 
@@ -73,16 +62,5 @@ describe('resource executions', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // skipped: tests are disabled for the time being
-  test.skip('retrieveConfig: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.executions.retrieveConfig(
-        { 'X-Auth-Token': 'X-Auth-Token' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Tsvalkyrie.NotFoundError);
   });
 });

@@ -28,19 +28,14 @@ import {
 } from './resources/jobs';
 import {
   LanguageVersion,
-  LanguageVersionListParams,
   LanguageVersionListResponse,
-  LanguageVersionRetrieveParams,
   LanguageVersionRetrieveResponse,
   LanguageVersions,
 } from './resources/language-versions';
 import {
   Language,
-  LanguageListParams,
   LanguageListResponse,
-  LanguageRetrieveParams,
   LanguageRetrieveResponse,
-  LanguageRetrieveVersionsParams,
   LanguageRetrieveVersionsResponse,
   Languages,
 } from './resources/languages';
@@ -48,19 +43,16 @@ import {
   Sandbox,
   SandboxCreateParams,
   SandboxCreateResponse,
-  SandboxRetrieveParams,
   SandboxRetrieveResponse,
 } from './resources/sandbox';
-import { Version, VersionRetrieveParams, VersionRetrieveResponse } from './resources/version';
+import { Version, VersionRetrieveResponse } from './resources/version';
 import {
   ExecutionExecuteParams,
   ExecutionExecuteResponse,
   ExecutionListParams,
   ExecutionListResponse,
   ExecutionResult,
-  ExecutionRetrieveConfigParams,
   ExecutionRetrieveConfigResponse,
-  ExecutionRetrieveParams,
   Executions,
 } from './resources/executions/executions';
 import { type Fetch } from './internal/builtin-types';
@@ -797,11 +789,7 @@ export declare namespace Tsvalkyrie {
     type JobRetrieveJobExecutionsParams as JobRetrieveJobExecutionsParams,
   };
 
-  export {
-    Version as Version,
-    type VersionRetrieveResponse as VersionRetrieveResponse,
-    type VersionRetrieveParams as VersionRetrieveParams,
-  };
+  export { Version as Version, type VersionRetrieveResponse as VersionRetrieveResponse };
 
   export {
     Languages as Languages,
@@ -809,9 +797,6 @@ export declare namespace Tsvalkyrie {
     type LanguageRetrieveResponse as LanguageRetrieveResponse,
     type LanguageListResponse as LanguageListResponse,
     type LanguageRetrieveVersionsResponse as LanguageRetrieveVersionsResponse,
-    type LanguageRetrieveParams as LanguageRetrieveParams,
-    type LanguageListParams as LanguageListParams,
-    type LanguageRetrieveVersionsParams as LanguageRetrieveVersionsParams,
   };
 
   export {
@@ -819,8 +804,6 @@ export declare namespace Tsvalkyrie {
     type LanguageVersion as LanguageVersion,
     type LanguageVersionRetrieveResponse as LanguageVersionRetrieveResponse,
     type LanguageVersionListResponse as LanguageVersionListResponse,
-    type LanguageVersionRetrieveParams as LanguageVersionRetrieveParams,
-    type LanguageVersionListParams as LanguageVersionListParams,
   };
 
   export {
@@ -828,7 +811,6 @@ export declare namespace Tsvalkyrie {
     type SandboxCreateResponse as SandboxCreateResponse,
     type SandboxRetrieveResponse as SandboxRetrieveResponse,
     type SandboxCreateParams as SandboxCreateParams,
-    type SandboxRetrieveParams as SandboxRetrieveParams,
   };
 
   export { Flake as Flake, type FlakeRetrieveResponse as FlakeRetrieveResponse };
@@ -839,9 +821,7 @@ export declare namespace Tsvalkyrie {
     type ExecutionListResponse as ExecutionListResponse,
     type ExecutionExecuteResponse as ExecutionExecuteResponse,
     type ExecutionRetrieveConfigResponse as ExecutionRetrieveConfigResponse,
-    type ExecutionRetrieveParams as ExecutionRetrieveParams,
     type ExecutionListParams as ExecutionListParams,
     type ExecutionExecuteParams as ExecutionExecuteParams,
-    type ExecutionRetrieveConfigParams as ExecutionRetrieveConfigParams,
   };
 }
